@@ -21,5 +21,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
+
+        setDataObserver()
+    }
+
+    private fun setDataObserver() {
+        mainViewModel.emojiData.observe(this) {
+            binding.tvTextEmoji.text = it.name
+        }
     }
 }
