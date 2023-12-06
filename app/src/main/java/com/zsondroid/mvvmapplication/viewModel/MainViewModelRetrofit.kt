@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel : ViewModel() {
+class MainViewModelRetrofit : ViewModel() {
     private val mainRepositoryRetrofit = MainRepositoryRetrofit()
 
     // MutableLiveData 는 수정 가능
