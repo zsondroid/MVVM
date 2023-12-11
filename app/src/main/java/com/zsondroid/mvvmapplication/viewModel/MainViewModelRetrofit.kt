@@ -10,8 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModelRetrofit : ViewModel() {
-    private val mainRepositoryRetrofit = MainRepositoryRetrofit()
+class MainViewModelRetrofit(private val mainRepository: MainRepositoryRetrofit) : ViewModel() {
 
     // MutableLiveData 는 수정 가능
     private val _emojiData = MutableLiveData<Emoji>()
@@ -26,7 +25,7 @@ class MainViewModelRetrofit : ViewModel() {
         var resultEmojiData: Emoji
 
         viewModelScope.launch(Dispatchers.IO) {
-            resultEmojiData = mainRepositoryRetrofit.getRandomEmojiData()
+            resultEmojiData = mainRepository.getRandomEmojiData()
 
             withContext(Dispatchers.Main) {
                 _emojiData.value = resultEmojiData

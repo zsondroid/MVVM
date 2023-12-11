@@ -8,17 +8,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zsondroid.mvvmapplication.R
 import com.zsondroid.mvvmapplication.databinding.ActivityMainBinding
+import com.zsondroid.mvvmapplication.model.MainRepositoryRetrofit
+import com.zsondroid.mvvmapplication.model.MainRepositoryRoom
 import com.zsondroid.mvvmapplication.room.User
 import com.zsondroid.mvvmapplication.viewModel.MainViewModelRetrofit
 import com.zsondroid.mvvmapplication.viewModel.MainViewModelRoom
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainViewModelRetrofit: MainViewModelRetrofit
+
+    private val mainViewModelRetrofit : MainViewModelRetrofit by viewModels {
+        object : ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
+                MainViewModelRetrofit(MainRepositoryRetrofit()) as T
+        }
+    }
+
     private val mainViewModelRoom : MainViewModelRoom by viewModels {
         object : ViewModelProvider.Factory{
             override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                MainViewModelRoom(application) as T
+                MainViewModelRoom(MainRepositoryRoom(application)) as T
         }
     }
 
@@ -26,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        mainViewModelRetrofit = ViewModelProvider(this)[MainViewModelRetrofit::class.java]
 
         binding.lifecycleOwner = this
         binding.mainViewModelRetrofit = mainViewModelRetrofit
